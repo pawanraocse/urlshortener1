@@ -13,14 +13,23 @@ services:
       - backend
 
   java-app:
+    restart: on-failure
+    environment:
+      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: urlshortener:latest
-    build: .
     ports:
       - "9000:9000"
+      - "9443:9443"  # Expose both HTTP and HTTPS ports
     depends_on:
       - postgres
     networks:
       - backend
+    volumes:
+      - ./src:/app/src  # Mount source code in a different directory
+      - ~/.m2:/root/.m2  # Keep Maven repository mount
 
 networks:
   backend:

@@ -5,7 +5,8 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the packaged Spring Boot application JAR file into the container
-COPY target/url_shortener.jar /app/url_shortener.jar
+COPY target/url_shortener.jar /app/jars/
+# Copy jar to a separate directory
 
-# Set the default command to run your Spring Boot application when the container starts
-CMD ["java", "-jar", "url_shortener.jar"]
+CMD ["java", "-jar", "/app/jars/url_shortener.jar"]
+# Update CMD accordingly
